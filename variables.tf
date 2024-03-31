@@ -1,6 +1,6 @@
 variable "keyName" {
  type = string
- default = "tech-ubuntu-key"
+ default = "[aws-key-name]"
 }
 
 variable "publicKeyLocation" {
@@ -10,7 +10,7 @@ variable "publicKeyLocation" {
 
 variable "privateKeyLocation" {
  type = string
- default = "~/Desktop/tech-ubuntu-key.pem"
+ default = "~/[path]/[key.pem]"
 }
 
 variable "ami-id" {
