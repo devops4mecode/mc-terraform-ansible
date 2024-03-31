@@ -1,0 +1,33 @@
+---
+- hosts: web
+  become: yes
+  vars:
+    - apache_service: "httpd"
+    - html_file_path: "/var/www/html/index.html"
+  tasks:
+    - name: Set variables for Debian/Ubuntu
+      set_fact:
+        apache_package: "apache2"
+        apache_service: "apache2"
+      when: ansible_os_family == "Debian"
+
+    - name: Set variables for RedHat/CentOS
+      set_fact:
+        apache_package: "httpd"
+      when: ansible_os_family == "RedHat"
+
+    - name: Install Apache
+      package:
+        name: "{{ apache_package }}"
+        state: present
+
+    - name: Copy HTML file
+      copy:
+        content: "Hi User, This from Terraform & Ansible!!!"
+        dest: "{{ html_file_path }}"
+      notify: Restart Apache
+  handlers:
+    - name: Restart Apache
+      service:
+        name: "{{ apache_service }}"
+        state: restarted
